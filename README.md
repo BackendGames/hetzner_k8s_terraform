@@ -44,4 +44,3 @@ mv terraform.tfvars.example terraform.tfvars
 terraform plan
 terraform apply
 ```
-set the path as .
