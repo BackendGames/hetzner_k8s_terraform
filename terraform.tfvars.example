@@ -1,9 +1,11 @@
 hcloud_token         = "YOUR_TOKEN"
-ssh_public_key_path  = "PATH"
-ssh_private_key_path = "PATH"
-masters_count        = NUMBER
-workers_count        = NUMBER
-cni                  = "CNI"
+master_count         = NUMBER
+worker_count         = NUMBER
+kubernetes_api_dns   = "DNS_NAME"
+cni                  = "Cilium/Flannel"
+cidr                 = "10.244.0.0/16"
 master_type          = "TYPE"
 worker_type          = "TYPE"
-image                = "ubuntu-20.04"
+image                = "SNAPSHOT_ID"
+ssh_public_key_path  = "PATH"
+ssh_private_key_path = "PATH"

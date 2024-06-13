@@ -22,7 +22,7 @@ resource "hcloud_network_subnet" "k8s_subnet" {
 
 # CNI installation flannel/cilium
 resource "null_resource" "install_cni" {
-  count = var.masters_count > 0 ? 1 : 0
+  count = var.master_count > 0 ? 1 : 0
 
   # add CNI file
   provisioner "file" {
@@ -53,33 +53,33 @@ resource "null_resource" "install_cni" {
     type        = "ssh"
     user        = "root"
     private_key = file(var.ssh_private_key_path)
-    host        = hcloud_server.masters[0].ipv4_address
+    host        = hcloud_server.master[0].ipv4_address
   }
 }
 
 # update hosts with workers & masters IP Addresses
 resource "null_resource" "update_hosts" {
-  count = var.masters_count + var.workers_count
+  count = var.master_count + var.worker_count
 
   provisioner "remote-exec" {
     inline = [
       "cat <<EOF | sudo tee -a /etc/hosts",
       "${join("\n", [
-        for i, master in hcloud_server.masters : "${master.ipv4_address} k8s-master-${i + 1}"
+        for i, master in hcloud_server.master : "${master.ipv4_address} k8s-master-${i + 1}"
       ])}",
       "${join("\n", [
-        for i, worker in hcloud_server.workers : "${worker.ipv4_address} k8s-worker-${i + 1}"
+        for i, worker in hcloud_server.worker : "${worker.ipv4_address} k8s-worker-${i + 1}"
       ])}",
       "EOF"
     ]
   }
 
-  depends_on = [hcloud_server.masters, hcloud_server.workers]
+  depends_on = [hcloud_server.master, hcloud_server.worker]
 
   connection {
     type        = "ssh"
     user        = "root"
     private_key = file(var.ssh_private_key_path)
-    host        = element(concat(hcloud_server.masters[*].ipv4_address, hcloud_server.workers[*].ipv4_address), count.index)
+    host        = element(concat(hcloud_server.master[*].ipv4_address, hcloud_server.worker[*].ipv4_address), count.index)
   }
 }

@@ -3,12 +3,12 @@ variable "hcloud_token" {
   type        = string
 }
 
-variable "masters_count" {
+variable "master_count" {
   description = "Number of master nodes"
   type        = number
 }
 
-variable "workers_count" {
+variable "worker_count" {
   description = "Number of worker nodes"
   type        = number
 }
@@ -17,6 +17,12 @@ variable "cni" {
   description = "CNI plugin (flannel or cilium)"
   type        = string
   default     = "flannel"
+}
+
+variable "cidr" {
+  description = "Pod Network Cidr"
+  type        = string
+  default     = "10.244.0.0/16"
 }
 
 variable "master_type" {

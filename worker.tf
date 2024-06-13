@@ -1,6 +1,6 @@
 # worker nodes
-resource "hcloud_server" "workers" {
-  count       = var.workers_count
+resource "hcloud_server" "worker" {
+  count       = var.worker_count
   name        = "k8s-worker-${count.index + 1}"
   image       = var.image
   server_type = var.worker_type
@@ -31,9 +31,9 @@ resource "hcloud_server" "workers" {
   # join cluster as worker
   provisioner "remote-exec" {
     inline = [
-      "JOIN_CMD=$(ssh -o StrictHostKeyChecking=no root@${hcloud_server.masters[0].ipv4_address} 'kubeadm --kubeconfig=/etc/kubernetes/admin.conf token create --print-join-command')",
+      "JOIN_CMD=$(ssh -o StrictHostKeyChecking=no root@${hcloud_server.master[0].ipv4_address} 'kubeadm --kubeconfig=/etc/kubernetes/admin.conf token create --print-join-command')",
       "$JOIN_CMD",
-      "ssh -o StrictHostKeyChecking=no root@${hcloud_server.masters[0].ipv4_address} 'kubectl label nodes k8s-worker-${count.index + 1} node-role.kubernetes.io/worker=worker'"
+      "ssh -o StrictHostKeyChecking=no root@${hcloud_server.master[0].ipv4_address} 'kubectl label nodes k8s-worker-${count.index + 1} node-role.kubernetes.io/worker=worker'"
     ]
   }
 }

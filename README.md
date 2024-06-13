@@ -23,15 +23,17 @@ set the path as .
 3. set the values of variables on terraform.tfvars.example
 
 ```bash
-hcloud_token         = "HCLOUD_TOKEN"
-ssh_public_key_path  = "./keys/id_ed25519.pub"
-ssh_private_key_path = "./keys/id_ed25519"
-masters_count        = 1 # add more masters if you've set a loadbalancer
-workers_count        = 1
+hcloud_token         = "YOUR_TOKEN"
+master_count         = 1
+worker_count         = 1
+kubernetes_api_dns   = ""
 cni                  = "cilium"
+cidr                 = "10.244.0.0/16"
 master_type          = "cpx21"
 worker_type          = "cpx11"
-image                = "ubuntu-20.04"
+image                = "ID"
+ssh_public_key_path  = "keys/id_ed25519.pub"
+ssh_private_key_path = "keys/id_ed25519"
 ```
 you can change them according to your need
 ```bash
