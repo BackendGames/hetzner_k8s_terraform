@@ -4,3 +4,4 @@ keys/id_*
 keys/connect.sh
 .gitignore
 .terraform*
+*tfstate*

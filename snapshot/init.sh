@@ -14,7 +14,7 @@ sudo tee /etc/sysctl.d/kubernetes.conf <<EOT
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
 net.ipv4.ip_forward = 1
-EOTs
+EOT
 sudo sysctl --system
 # DOCKER INSTALLATION
 sudo apt-get update
