@@ -15,21 +15,10 @@ resource "hcloud_server" "workers" {
     private_key = file(var.ssh_private_key_path)
     host        = self.ipv4_address
   }
-  provisioner "file" {
-    source      = "init.sh"
-    destination = "/tmp/init.sh"
-  }
 
   provisioner "file" {
     source      = "keys/id_ed25519"
     destination = "/tmp/id_ed25519"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "chmod +x /tmp/init.sh",
-      "/tmp/init.sh"
-    ]
   }
 
   provisioner "remote-exec" {

@@ -8,23 +8,6 @@ resource "hcloud_server" "masters" {
   network {
     network_id = hcloud_network_subnet.k8s_subnet.network_id
   }
-  connection {
-    type        = "ssh"
-    user        = "root"
-    private_key = file(var.ssh_private_key_path)
-    host        = self.ipv4_address
-  }
-  provisioner "file" {
-    source      = "init.sh"
-    destination = "/tmp/init.sh"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "chmod +x /tmp/init.sh",
-      "/tmp/init.sh"
-    ]
-  }
 
 }
 
