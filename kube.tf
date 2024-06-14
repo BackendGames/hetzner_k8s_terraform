@@ -9,14 +9,14 @@ resource "hcloud_ssh_key" "hcloud_ssh_public_key" {
 
 # define hcloud network & subnet
 resource "hcloud_network" "k8s_network" {
-  name     = "example-network"
-  ip_range = "10.0.0.0/16"
+  name     = "k8s-network"
+  ip_range = var.hcloud_network_range
 }
 resource "hcloud_network_subnet" "k8s_subnet" {
   network_id   = hcloud_network.k8s_network.id
   type         = "cloud"
   network_zone = "eu-central"
-  ip_range     = "10.0.0.0/16"
+  ip_range     = var.hcloud_subnet_range
 }
 
 

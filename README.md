@@ -24,16 +24,24 @@ set the path as .
 
 ```bash
 hcloud_token         = "YOUR_TOKEN"
-master_count         = 1
+hcloud_network_range = "10.0.0.0/16"
+hcloud_subnet_range  = "10.0.0.0/16"
+master_count         = number
 worker_count         = 1
-kubernetes_api_dns   = ""
+gameserver_count     = 1
+database_count       = 0
+microservice_count   = 0
+master_type          = "cpx21"
+worker_type          = "cpx21"
+gameserver_type      = "cpx21"
+database_type        = "cpx21"
+microservice_type    = "cpx21"
+kubernetes_api_dns   = "DNS_NAME"
 cni                  = "cilium"
 cidr                 = "10.244.0.0/16"
-master_type          = "cpx21"
-worker_type          = "cpx11"
-image                = "ID"
-ssh_public_key_path  = "keys/id_ed25519.pub"
-ssh_private_key_path = "keys/id_ed25519"
+image                = "SNAPSHOT_ID"
+ssh_public_key_path  = "./keys/id_ed25519.pub"
+ssh_private_key_path = "./keys/id_ed25519"
 ```
 you can change them according to your need
 ```bash
