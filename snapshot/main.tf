@@ -21,7 +21,7 @@ resource "hcloud_server" "template" {
   count       = 1
   name        = "template"
   image       = "debian-12"
-  server_type = "cax11"
+  server_type = "cpx21"
   ssh_keys    = [hcloud_ssh_key.hcloud_ssh_public_key.id]
 
 

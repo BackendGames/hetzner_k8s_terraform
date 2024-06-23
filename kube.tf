@@ -48,6 +48,17 @@ resource "null_resource" "install_cni" {
     ]
   }
 
+      # install CCM
+  provisioner "remote-exec" {
+    inline = [
+      "kubectl -n kube-system create secret generic hcloud --from-literal=token=${var.hcloud_token}",
+      "helm repo add hcloud https://charts.hetzner.cloud",
+      "helm repo update hcloud",
+      "helm install hccm hcloud/hcloud-cloud-controller-manager -n kube-system"
+    ]
+  }
+
+
   depends_on = [null_resource.init_first_master]
   connection {
     type        = "ssh"
