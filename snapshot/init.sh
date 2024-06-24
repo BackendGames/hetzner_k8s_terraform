@@ -46,5 +46,8 @@ cat > /etc/systemd/system/kubelet.service.d/20-hcloud.conf << EOF
 [Service]
 Environment="KUBELET_EXTRA_ARGS=--cloud-provider=external"
 EOF
+cat <<EOF | sudo tee /etc/default/kubelet
+KUBELET_EXTRA_ARGS=--cloud-provider=external
+EOF
 systemctl daemon-reload
 systemctl restart kubelet
