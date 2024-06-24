@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: nginx-service
   annotations:
-    load-balancer.hetzner.cloud/location: hel1
+    load-balancer.hetzner.cloud/location: nbg1
 spec:
   selector:
     app: nginx

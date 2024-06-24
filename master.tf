@@ -4,6 +4,7 @@ resource "hcloud_server" "master" {
   name        = "k8s-master-${count.index + 1}"
   image       = var.image
   server_type = var.master_type
+  location    = var.hcloud_location
   ssh_keys    = [hcloud_ssh_key.hcloud_ssh_public_key.id]
   network {
     network_id = hcloud_network_subnet.k8s_subnet.network_id

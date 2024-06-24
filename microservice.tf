@@ -4,6 +4,7 @@ resource "hcloud_server" "microservice" {
   name        = "k8s-microservice-${count.index + 1}"
   image       = var.image
   server_type = var.microservice_type
+  location    = var.hcloud_location
   ssh_keys    = [hcloud_ssh_key.hcloud_ssh_public_key.id]
   depends_on  = [null_resource.install_cni]
   network {

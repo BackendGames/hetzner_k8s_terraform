@@ -81,6 +81,12 @@ variable "microservice_type" {
   default     = "cx11"
 }
 
+variable "hcloud_location" {
+  description = "hcloud servers location"
+  type        = string
+  default     = "nbg1"
+}
+
 
 variable "image" {
   description = "Image type for the nodes"
@@ -89,7 +95,7 @@ variable "image" {
 }
 
 variable "kubernetes_api_dns" {
-  description = "Kubernetes API DNS name (optional) => LOAD_BALANCER_DNS:LOAD_BALANCER_PORT"
+  description = "Kubernetes API DNS name (optional) => LOAD_BALANCER_DNS"
   type        = string
   default     = ""
 }

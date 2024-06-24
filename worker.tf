@@ -4,6 +4,7 @@ resource "hcloud_server" "worker" {
   name        = "k8s-worker-${count.index + 1}"
   image       = var.image
   server_type = var.worker_type
+  location    = var.hcloud_location
   ssh_keys    = [hcloud_ssh_key.hcloud_ssh_public_key.id]
   depends_on  = [null_resource.install_cni]
   network {

@@ -4,6 +4,7 @@ resource "hcloud_server" "database" {
   name        = "k8s-database-${count.index + 1}"
   image       = var.image
   server_type = var.database_type
+  location    = var.hcloud_location
   ssh_keys    = [hcloud_ssh_key.hcloud_ssh_public_key.id]
   depends_on  = [null_resource.install_cni]
   network {

@@ -4,6 +4,7 @@ resource "hcloud_server" "gameserver" {
   name        = "k8s-gameserver-${count.index + 1}"
   image       = var.image
   server_type = var.gameserver_type
+  location    = var.hcloud_location
   ssh_keys    = [hcloud_ssh_key.hcloud_ssh_public_key.id]
   depends_on  = [null_resource.install_cni]
   network {
