@@ -3,7 +3,8 @@ kind: Service
 metadata:
   name: nginx-service
   annotations:
-    load-balancer.hetzner.cloud/location: nbg1
+    load-balancer.hetzner.cloud/location: nbg1 # must ensure the network location of the load balancer is same as for the nodes
+    load-balancer.hetzner.cloud/use-private-ip: "true" # ensures the traffic between LB and nodes goes through the private network, so you don't need to change 
 spec:
   selector:
     app: nginx
