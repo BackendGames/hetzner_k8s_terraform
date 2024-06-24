@@ -22,10 +22,11 @@ resource "null_resource" "init_first_master" {
     private_key = file(var.ssh_private_key_path)
     host        = hcloud_server.master[0].ipv4_address
   }
+
   provisioner "remote-exec" {
     # --ignore-preflight-errors=NumCPU in order to use smaller type than CX21 current type is CX11; 2VCpus is required for k8s
     inline = [
-      "kubeadm init ${var.kubernetes_api_dns != "" ? "--control-plane-endpoint=${var.kubernetes_api_dns}:6443" : "--control-plane-endpoint=${hcloud_server.master[0].ipv4_address}:6443"} --apiserver-advertise-address ${hcloud_server.master[0].ipv4_address} --pod-network-cidr=${var.cidr} --cri-socket=/run/containerd/containerd.sock --ignore-preflight-errors=NumCPU",
+      "kubeadm init --control-plane-endpoint=${hcloud_load_balancer.lb.ipv4}:6443 --apiserver-advertise-address ${hcloud_server.master[0].ipv4_address} --pod-network-cidr=${var.cidr} --cri-socket=/run/containerd/containerd.sock --ignore-preflight-errors=NumCPU",
       "mkdir -p /root/.kube",
       "cp -i /etc/kubernetes/admin.conf /root/.kube/config",
       "chown $(id -u):$(id -g) /root/.kube/config"

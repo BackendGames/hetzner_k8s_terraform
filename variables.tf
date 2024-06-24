@@ -94,12 +94,6 @@ variable "image" {
   default     = "ubuntu-20.04"
 }
 
-variable "kubernetes_api_dns" {
-  description = "Kubernetes API DNS name (optional) => LOAD_BALANCER_DNS"
-  type        = string
-  default     = ""
-}
-
 variable "ssh_public_key_path" {
   description = "Path to the SSH public key file"
   sensitive   = true

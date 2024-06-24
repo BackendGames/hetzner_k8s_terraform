@@ -7,6 +7,47 @@ resource "hcloud_ssh_key" "hcloud_ssh_public_key" {
   public_key = file(var.ssh_public_key_path)
 }
 
+# HA loadbalancer
+resource "hcloud_load_balancer" "lb" {
+  name               = "cluster-endpoint"
+  load_balancer_type = "lb11"
+  location           = "nbg1"
+}
+
+resource "hcloud_load_balancer_target" "load_balancer_target" {
+  count            = var.master_count
+  type             = "server"
+  load_balancer_id = hcloud_load_balancer.lb.id
+  server_id        = hcloud_server.master[count.index].id
+}
+
+resource "hcloud_load_balancer_service" "k8s_api_service" {
+  load_balancer_id = hcloud_load_balancer.lb.id
+  protocol         = "tcp"
+  listen_port      = 6443
+  destination_port = 6443
+
+  health_check {
+    protocol = "tcp"
+    port     = 6443
+    interval = 10
+    timeout  = 5
+    retries  = 3
+  }
+}
+
+resource "hcloud_load_balancer_network" "srvnetwork" {
+  load_balancer_id = hcloud_load_balancer.lb.id
+  network_id       = hcloud_network.k8s_network.id
+  # **Note**: the depends_on is important when directly attaching the
+  # server to a network. Otherwise Terraform will attempt to create
+  # server and sub-network in parallel. This may result in the server
+  # creation failing randomly.
+  depends_on = [
+    hcloud_network_subnet.k8s_subnet
+  ]
+}
+
 # define hcloud network & subnet
 resource "hcloud_network" "k8s_network" {
   name     = "k8s-network"
