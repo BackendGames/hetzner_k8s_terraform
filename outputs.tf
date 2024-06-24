@@ -26,6 +26,11 @@ output "microservice_ips" {
 }
 
 output "kubeconfig" {
-  value       = "ssh -i keys/id_ed25519 -o StrictHostKeyChecking=no root@${hcloud_server.master[0].ipv4_address} 'cat /etc/kubernetes/admin.conf' > config"
+  value       = "ssh -i keys/id_ed25519 -o StrictHostKeyChecking=no root@${hcloud_server.master[0].ipv4_address} 'cat /etc/kubernetes/admin.conf' > ~/.kube/config"
   description = "Get kubeconfig file by running this command"
+}
+
+output "cluster_endpoint" {
+  value       = hcloud_load_balancer.lb.ipv4
+  description = "HA Cluster Endpoint"
 }
