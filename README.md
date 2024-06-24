@@ -26,7 +26,7 @@ set the path as .
 hcloud_token         = "YOUR_TOKEN"
 hcloud_network_range = "10.0.0.0/16"
 hcloud_subnet_range  = "10.0.0.0/16"
-master_count         = number
+master_count         = number  # use uneven numbers 3 || 5 || ..
 worker_count         = 1
 gameserver_count     = 1
 database_count       = 0
@@ -36,7 +36,6 @@ worker_type          = "cpx21"
 gameserver_type      = "cpx21"
 database_type        = "cpx21"
 microservice_type    = "cpx21"
-kubernetes_api_dns   = "DNS_NAME"
 cni                  = "cilium"
 cidr                 = "10.244.0.0/16"
 image                = "SNAPSHOT_ID"
@@ -53,4 +52,18 @@ mv terraform.tfvars.example terraform.tfvars
 ```bash
 terraform plan
 terraform apply
+```
+
+
+4. use remote backend if needed create remote.tf file with the following
+
+```
+terraform {
+  backend "remote" {
+    organization = "ORG_NAME"
+    workspaces {
+      name = "WORKDSPACE_NAME"
+    }
+  }
+}
 ```
