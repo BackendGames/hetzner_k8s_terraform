@@ -96,9 +96,17 @@ resource "null_resource" "install_cni" {
       "helm repo add hcloud https://charts.hetzner.cloud",
       "helm repo update hcloud",
       "helm install hccm hcloud/hcloud-cloud-controller-manager -n kube-system",
-      "helm install hcloud-csi hcloud/hcloud-csi -n kube-system"
     ]
   }
+
+  provisioner "remote-exec" {
+    inline = [
+      "helm repo add csi-driver-nfs https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts",
+      "helm repo update csi-driver-nfs",
+      "helm install csi-driver-nfs csi-driver-nfs/csi-driver-nfs --namespace kube-system"
+    ]
+  }
+
 
 
   depends_on = [null_resource.init_first_master]
