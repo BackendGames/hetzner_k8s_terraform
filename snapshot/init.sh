@@ -3,7 +3,7 @@ sudo timedatectl set-ntp true
 sudo swapoff -a
 sudo sed -i '/ swap / s/^/#/' /etc/fstab
 sudo apt-get update && sudo apt-get upgrade -y
-sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common gnupg2 git
+sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common gnupg2 git nfs-common
 sudo tee /etc/modules-load.d/containerd.conf <<EOF
 overlay
 br_netfilter

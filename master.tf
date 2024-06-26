@@ -9,6 +9,10 @@ resource "hcloud_server" "master" {
   network {
     network_id = hcloud_network_subnet.k8s_subnet.network_id
   }
+  public_net {
+    ipv4_enabled = true
+    ipv6_enabled = false
+  }
 
 }
 
@@ -26,7 +30,7 @@ resource "null_resource" "init_first_master" {
   provisioner "remote-exec" {
     # --ignore-preflight-errors=NumCPU in order to use smaller type than CX21 current type is CX11; 2VCpus is required for k8s
     inline = [
-      "kubeadm init --control-plane-endpoint=${hcloud_load_balancer.lb.ipv4}:6443 --apiserver-advertise-address ${hcloud_server.master[0].ipv4_address} --pod-network-cidr=${var.cidr} --cri-socket=/run/containerd/containerd.sock --ignore-preflight-errors=NumCPU",
+      "kubeadm init --control-plane-endpoint=${hcloud_load_balancer.lb.ipv4}:6443 --apiserver-advertise-address ${hcloud_server.master[0].network.*.ip[0]} --pod-network-cidr=${var.cidr} --cri-socket=/run/containerd/containerd.sock --ignore-preflight-errors=NumCPU",
       "mkdir -p /root/.kube",
       "cp -i /etc/kubernetes/admin.conf /root/.kube/config",
       "chown $(id -u):$(id -g) /root/.kube/config"

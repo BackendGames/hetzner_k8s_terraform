@@ -99,16 +99,6 @@ resource "null_resource" "install_cni" {
     ]
   }
 
-  provisioner "remote-exec" {
-    inline = [
-      "helm repo add csi-driver-nfs https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts",
-      "helm repo update csi-driver-nfs",
-      "helm install csi-driver-nfs csi-driver-nfs/csi-driver-nfs --namespace kube-system"
-    ]
-  }
-
-
-
   depends_on = [null_resource.init_first_master]
   connection {
     type        = "ssh"
@@ -120,16 +110,25 @@ resource "null_resource" "install_cni" {
 
 # update hosts with workers & masters IP Addresses
 resource "null_resource" "update_hosts" {
-  count = var.master_count + var.worker_count
+  count = var.master_count + var.worker_count + var.gameserver_count + var.database_count + var.microservice_count
 
   provisioner "remote-exec" {
     inline = [
       "cat <<EOF | sudo tee -a /etc/hosts",
       "${join("\n", [
-        for i, master in hcloud_server.master : "${master.ipv4_address} k8s-master-${i + 1}"
+        for i, master in hcloud_server.master : "${master.network.*.ip[0]} k8s-master-${i + 1}"
       ])}",
       "${join("\n", [
-        for i, worker in hcloud_server.worker : "${worker.ipv4_address} k8s-worker-${i + 1}"
+        for i, worker in hcloud_server.worker : "${worker.network.*.ip[0]} k8s-worker-${i + 1}"
+      ])}",
+      "${join("\n", [
+        for i, gameserver in hcloud_server.gameserver : "${gameserver.network.*.ip[0]} k8s-worker-${i + 1}"
+      ])}",
+      "${join("\n", [
+        for i, database in hcloud_server.database : "${database.network.*.ip[0]} k8s-worker-${i + 1}"
+      ])}",
+      "${join("\n", [
+        for i, microservice in hcloud_server.microservice : "${microservice.network.*.ip[0]} k8s-worker-${i + 1}"
       ])}",
       "EOF"
     ]

@@ -35,6 +35,6 @@ variable "hcloud_subnet_range" {
 }
 
 variable "hcloud_ssh_public_key_id" {
-    description = "ssh public key id"
+  description = "ssh public key id"
   type        = string
 }

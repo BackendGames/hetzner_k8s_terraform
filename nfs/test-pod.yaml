@@ -7,9 +7,9 @@ spec:
     - name: my-container
       image: nginx
       volumeMounts:
-        - mountPath: /data
-          name: my-volume
+        - name: nfs-pvc
+          mountPath: "/data"
   volumes:
-    - name: my-volume
+    - name: nfs-pvc
       persistentVolumeClaim:
-        claimName: pvc-nfs
+        claimName: test-claim

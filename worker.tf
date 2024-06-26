@@ -10,6 +10,10 @@ resource "hcloud_server" "worker" {
   network {
     network_id = hcloud_network_subnet.k8s_subnet.network_id
   }
+  public_net {
+    ipv4_enabled = true
+    ipv6_enabled = false
+  }
   connection {
     type        = "ssh"
     user        = "root"
