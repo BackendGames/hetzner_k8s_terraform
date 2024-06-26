@@ -1,0 +1,1 @@
+add your private key to this folder; terraform cant reach files outside main dir

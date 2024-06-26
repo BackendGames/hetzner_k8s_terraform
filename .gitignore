@@ -5,3 +5,4 @@ keys/connect.sh
 .gitignore
 .terraform*
 *tfstate*
+nfs/keys/id*

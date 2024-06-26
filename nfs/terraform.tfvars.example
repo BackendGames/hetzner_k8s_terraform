@@ -1,0 +1,7 @@
+hcloud_token             = "YOUR_TOKEN"
+hcloud_subnet_range      = "192.168.1.0/24"
+hcloud_network_id        = "EXISTING_NETWORK_ID"
+server_type              = "cpx21"
+image                    = "debian-12"
+hcloud_ssh_public_key_id = "EXISTING_PUBLIC_KEY_ID"
+ssh_private_key_path     = "./keys/id_ed25519"

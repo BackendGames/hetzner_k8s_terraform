@@ -21,11 +21,15 @@ resource "hcloud_server" "nfs" {
   network {
     network_id = var.hcloud_network_id # after cluster creation get the id
   }
+  public_net {
+    ipv4_enabled = true
+    ipv6_enabled = false
+  }
 
   connection {
     type        = "ssh"
     user        = "root"
-    private_key = file("../keys/id_ed25519")
+    private_key = file(var.ssh_private_key_path)
     host        = self.ipv4_address
   }
 

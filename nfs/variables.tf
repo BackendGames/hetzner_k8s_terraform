@@ -38,3 +38,8 @@ variable "hcloud_ssh_public_key_id" {
   description = "ssh public key id"
   type        = string
 }
+
+variable "ssh_private_key_path" {
+  description = "Path to the SSH public key file"
+  sensitive   = true
+}

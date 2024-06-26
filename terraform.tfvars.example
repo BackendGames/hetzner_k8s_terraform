@@ -1,8 +1,8 @@
 hcloud_token         = "YOUR_TOKEN"
-hcloud_network_range = "10.0.0.0/16"
-hcloud_subnet_range  = "10.0.0.0/16"
-master_count         = number
-worker_count         = 1
+hcloud_network_range = "192.168.0.0/16"
+hcloud_subnet_range  = "192.168.1.0/24"
+master_count         = 1
+worker_count         = 2
 gameserver_count     = 1
 database_count       = 0
 microservice_count   = 0
