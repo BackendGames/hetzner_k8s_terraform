@@ -107,39 +107,3 @@ resource "null_resource" "install_cni" {
     host        = hcloud_server.master[0].ipv4_address
   }
 }
-
-# update hosts with workers & masters IP Addresses
-resource "null_resource" "update_hosts" {
-  count = var.master_count + var.worker_count + var.gameserver_count + var.database_count + var.microservice_count
-
-  provisioner "remote-exec" {
-    inline = [
-      "cat <<EOF | sudo tee -a /etc/hosts",
-      "${join("\n", [
-        for i, master in hcloud_server.master : "${master.network.*.ip[0]} k8s-master-${i + 1}"
-      ])}",
-      "${join("\n", [
-        for i, worker in hcloud_server.worker : "${worker.network.*.ip[0]} k8s-worker-${i + 1}"
-      ])}",
-      "${join("\n", [
-        for i, gameserver in hcloud_server.gameserver : "${gameserver.network.*.ip[0]} k8s-worker-${i + 1}"
-      ])}",
-      "${join("\n", [
-        for i, database in hcloud_server.database : "${database.network.*.ip[0]} k8s-worker-${i + 1}"
-      ])}",
-      "${join("\n", [
-        for i, microservice in hcloud_server.microservice : "${microservice.network.*.ip[0]} k8s-worker-${i + 1}"
-      ])}",
-      "EOF"
-    ]
-  }
-
-  depends_on = [hcloud_server.master, hcloud_server.worker]
-
-  connection {
-    type        = "ssh"
-    user        = "root"
-    private_key = file(var.ssh_private_key_path)
-    host        = element(concat(hcloud_server.master[*].ipv4_address, hcloud_server.worker[*].ipv4_address), count.index)
-  }
-}
