@@ -1,5 +1,28 @@
 # kubeadm-config.yml
 apiVersion: kubeadm.k8s.io/v1beta3
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: "IP"
+  bindPort: 6443
+---
+apiVersion: kubeadm.k8s.io/v1beta3
 kind: ClusterConfiguration
 kubernetesVersion: v1.30.2
 imageRepository: docker.io/frostline
+controlPlaneEndpoint: "IP:6443"
+networking:
+  podSubnet: "192.168.0.0/16"
+---
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+cgroupDriver: "systemd"
+criSocket: "/run/containerd/containerd.sock"
+
+#                 +++
+
+# sudo crictl config --set runtime-endpoint=unix:///run/containerd/containerd.sock \
+# --set image-endpoint=unix:///run/containerd/containerd.sock
+
+# set pause image
+# docker.io/frostline/pause:3.9
