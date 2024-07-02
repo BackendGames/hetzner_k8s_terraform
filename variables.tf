@@ -51,6 +51,12 @@ variable "cidr" {
   default     = "10.244.0.0/16"
 }
 
+variable "load_balancer_type" {
+  description = "HA cluster load balancer type"
+  type        = string
+  default     = "lb11"
+}
+
 variable "master_type" {
   description = "Hetzner Cloud server type for master nodes"
   type        = string

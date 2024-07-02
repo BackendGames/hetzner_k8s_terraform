@@ -10,8 +10,8 @@ resource "hcloud_ssh_key" "hcloud_ssh_public_key" {
 # HA loadbalancer
 resource "hcloud_load_balancer" "lb" {
   name               = "cluster-endpoint"
-  load_balancer_type = "lb11"
-  location           = "nbg1"
+  load_balancer_type = var.load_balancer_type
+  location           = var.hcloud_location
 }
 
 resource "hcloud_load_balancer_target" "load_balancer_target" {
@@ -89,7 +89,7 @@ resource "null_resource" "install_cni" {
     ]
   }
 
-  # configure ccm & csi
+  # configure ccm
   provisioner "remote-exec" {
     inline = [
       "kubectl -n kube-system create secret generic hcloud --from-literal=token=${var.hcloud_token}",
