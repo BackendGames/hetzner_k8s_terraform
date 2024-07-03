@@ -9,6 +9,11 @@ variable "hcloud_network_range" {
   type        = string
 }
 
+variable "subnet_zone" {
+  description = "network zone"
+  type        = string
+}
+
 variable "hcloud_subnet_range" {
   description = "Hetzner Cloud Subnet IP Range"
   type        = string

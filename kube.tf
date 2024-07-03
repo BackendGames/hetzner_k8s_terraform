@@ -56,7 +56,7 @@ resource "hcloud_network" "k8s_network" {
 resource "hcloud_network_subnet" "k8s_subnet" {
   network_id   = hcloud_network.k8s_network.id
   type         = "cloud"
-  network_zone = "eu-central"
+  network_zone = var.subnet_zone
   ip_range     = var.hcloud_subnet_range
 }
 
